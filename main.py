@@ -1,15 +1,18 @@
 """
 This is the main module for running TextRecognizer
 """
+from libraries import TextRecognizer
+
+from PIL import Image
 
 
-def print_hi(name):
+def run_sample_image():
     """
-    Prints `Hi` and then a name provided
-    :param name: Insert a string to print the name
+    Test class for running sample images
     """
-    print(f'Hi, {name}')
+    img = Image.open("sample-images/hello-world.png")
+    TextRecognizer.run(img)
 
 
 if __name__ == '__main__':
-    print_hi('Joshua')
+    run_sample_image()
