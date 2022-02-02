@@ -8,3 +8,4 @@ def run(image):
     :param image: PIL image that needs to be processed
     """
     binImage = Binarizer.binarize(image)
+    binImage.show()
