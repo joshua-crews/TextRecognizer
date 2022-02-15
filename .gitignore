@@ -143,3 +143,4 @@ cython_debug/
 
 # Local testing
 sample-images/
+output.png

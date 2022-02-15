@@ -44,12 +44,12 @@ def test(a, b, c, d, imd, createOutputImage):
         maxval = np.amax(result)
         index = np.where(result == maxval)
         arr_out.append(arr_result[index[1][0]])
-        if createOutputImage:
+        if createOutputImage is not False:
             global outputImage
             outputImage = 'output.png'
 
 
-def predict(input_img, createOutput=False):
+def predict(input_img, boxColor, boxWidth, createOutput=False):
     im = input_img.copy()
     img = np.array(im)
 
@@ -76,17 +76,19 @@ def predict(input_img, createOutput=False):
                 try:
                     sampleOutput = np.array(Image.open(outputImage))
                 except FileNotFoundError:
-                    sampleOutput = np.array(input_img)
-                cv2.rectangle(sampleOutput, (x, y), (x + w, y + h), (0, 255, 0), 3)
+                    sampleOutput = np.array(createOutput)
+                cv2.rectangle(sampleOutput, (x, y), (x + w, y + h), boxColor, boxWidth)
                 sampleOutput = Image.fromarray(np.uint8(sampleOutput))
                 sampleOutput.save(outputImage, 'PNG')
-                sampleOutput.show()
 
     final = ''
     i = 0
     for ch in reversed(arr_out):
         i += 1
         final = final + ch
+
+    if outputImage is not None:
+        sampleOutput.show()
 
     return final
 
