@@ -140,6 +140,9 @@ cython_debug/
 # Local dev environment setup
 .envrc
 .idea/
+training-dataset/
+training-dataset2/
+training-dataset3/
 
 # Local testing
 sample-images/
