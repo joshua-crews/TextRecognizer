@@ -84,8 +84,8 @@ batch = int(config.get('Modelling_Options', 'batch_ratio'))
 epochs = int(config.get('Modelling_Options', 'training_epochs'))
 
 arr_result = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
-              'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P',
-              'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+              'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
+              'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 """model = Sequential()
 model.add(Conv2D(32, (3, 3), input_shape=(20, 20, 1), activation='relu'))
@@ -105,7 +105,7 @@ model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
 model.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
 model.add(Flatten())
 model.add(Dense(128, activation='relu'))
-model.add(Dense(units=52, activation='sigmoid'))
+model.add(Dense(units=62, activation='sigmoid'))
 
 # Compile the model
 model.compile(loss='sparse_categorical_crossentropy',
