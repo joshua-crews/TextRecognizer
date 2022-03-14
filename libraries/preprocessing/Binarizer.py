@@ -15,7 +15,7 @@ def binarize(image):
     return im
 
 
-def __binarize_array(numpy_array, threshold=100):
+def __binarize_array(numpy_array, threshold=120):
     for i in range(len(numpy_array)):
         for j in range(len(numpy_array[0])):
             if numpy_array[i][j] > threshold:
