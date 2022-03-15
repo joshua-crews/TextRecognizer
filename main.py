@@ -10,7 +10,7 @@ def run_sample_image():
     """
     Test class for running sample images
     """
-    img = Image.open("sample-images/numbers2.png")
+    img = Image.open("sample-images/test2.png")
     TextRecognizer.run(img)
 
 

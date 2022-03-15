@@ -141,8 +141,10 @@ cython_debug/
 .envrc
 .idea/
 training-dataset/
-training-dataset2/
-training-dataset3/
+
+# Network Design Output
+libraries/network/network.gv
+libraries/network/network.gv.pdf
 
 # Local testing
 sample-images/

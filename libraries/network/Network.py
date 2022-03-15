@@ -37,12 +37,12 @@ def test(a, b, c, d, imd, createOutputImage):
     test_image = cv2.copyMakeBorder(test_image, 10, 10, 10, 10, cv2.BORDER_CONSTANT, value=(255, 255, 255))
     test_image = cv2.medianBlur(test_image.copy(), 3)
     test_image = cv2.resize(test_image.copy(), (28, 28), interpolation=cv2.INTER_AREA)
-    t = test_image.copy()
     cv2.resize(test_image, (28, 28))
+    test_image = np.invert(test_image)
     test_image = (image.img_to_array(test_image)) / 255
     test_image = np.expand_dims(test_image, axis=0)
     result = model.predict(test_image)
-    np.reshape(result, 10)
+    np.reshape(result, 47)
     high = np.amax(test_image)
     low = np.amin(test_image)
     if high != low:
