@@ -5,9 +5,14 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from PIL import Image, ImageDraw, ImageFont
 
+from configparser import ConfigParser
+
+config = ConfigParser()
+config.read('libraries/config.ini')
+
+accuracy_threshold = float(config.get('Mapping_Options', 'accuracy_threshold'))
+
 arr_out = []
-"""arr_result = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-              'V', 'W', 'X', 'Y', 'Z']"""
 arr_result = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
               'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'd', 'e', 'f', 'g',
               'h', 'n', 'q', 'r', 't']
@@ -47,12 +52,14 @@ def test(a, b, c, d, imd, createOutputImage):
     low = np.amin(test_image)
     if high != low:
         maxval = np.amax(result)
-        index = np.where(result == maxval)
-        arr_out.append(arr_result[index[1][0]])
-        if createOutputImage is not False:
-            global outputImage
-            outputImage = 'output.png'
-            return arr_result[index[1][0]]
+        if maxval > accuracy_threshold:
+            index = np.where(result == maxval)
+            arr_out.append(arr_result[index[1][0]])
+            print('Maxval: ' + str(maxval) + ' |  Character: ' + str(arr_result[index[1][0]]))
+            if createOutputImage is not False:
+                global outputImage
+                outputImage = 'output.png'
+                return arr_result[index[1][0]]
 
 
 def predict(input_img, boxColor, boxWidth, createOutput=False):
@@ -88,12 +95,13 @@ def predict(input_img, boxColor, boxWidth, createOutput=False):
                         sampleOutput = np.array(Image.open(outputImage))
                 except FileNotFoundError:
                     sampleOutput = np.array(createOutput)
-                cv2.rectangle(sampleOutput, (x, y), (x + w, y + h), boxColor, boxWidth)
-                sampleOutput = Image.fromarray(np.uint8(sampleOutput))
-                draw = ImageDraw.Draw(sampleOutput)
-                font = ImageFont.truetype("./arial.ttf", 30)
-                draw.text((x, y - (boxWidth * 4) - 20), str(char), fill=(255, 0, 0), font=font)
-                sampleOutput.save(outputImage, 'PNG')
+                if char is not None:
+                    cv2.rectangle(sampleOutput, (x, y), (x + w, y + h), boxColor, boxWidth)
+                    sampleOutput = Image.fromarray(np.uint8(sampleOutput))
+                    draw = ImageDraw.Draw(sampleOutput)
+                    font = ImageFont.truetype("./arial.ttf", 30)
+                    draw.text((x, y - (boxWidth * 4) - 20), str(char), fill=(255, 0, 0), font=font)
+                    sampleOutput.save(outputImage, 'PNG')
 
     final = ''
     i = 0
