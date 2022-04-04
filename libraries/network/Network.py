@@ -1,4 +1,5 @@
 """Network analyzer that calculates the image in question, the meat of the code"""
+import numpy
 import numpy as np
 import cv2
 from tensorflow.keras.models import load_model
@@ -55,17 +56,14 @@ def test(a, b, c, d, imd, createOutputImage):
         if maxval > accuracy_threshold:
             index = np.where(result == maxval)
             arr_out.append(arr_result[index[1][0]])
-            print('Maxval: ' + str(maxval) + ' |  Character: ' + str(arr_result[index[1][0]]))
             if createOutputImage is not False:
                 global outputImage
                 outputImage = 'output.png'
-                return arr_result[index[1][0]]
+            return arr_result[index[1][0]]
 
 
-def predict(input_img, boxColor, boxWidth, createOutput=False):
-    im = input_img.copy()
-    img = np.array(im)
-
+def predict(img, boxColor, boxWidth, createOutput=False):
+    img = np.array(img)
     blur = cv2.bilateralFilter(img.copy(), 9, 75, 75)
     _, thresh = cv2.threshold(blur.copy(), 200, 255, cv2.THRESH_BINARY)
 
@@ -113,6 +111,45 @@ def predict(input_img, boxColor, boxWidth, createOutput=False):
         sampleOutput.show()
 
     return final
+
+
+def predict_still(img, original_img, boxColor, boxWidth):
+    """
+    Used to predict characters in a live video frame at an accelerated but also less accurate rate
+    :param img:
+    :param original_img:
+    :param boxColor:
+    :param boxWidth:
+    :return:
+    """
+    blur = cv2.bilateralFilter(img.copy(), 9, 75, 75)
+    _, thresh = cv2.threshold(blur.copy(), 200, 255, cv2.THRESH_BINARY)
+
+    contours, h = cv2.findContours(thresh.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+
+    sum = 0
+    for cnt in contours:
+        x, y, w, h = cv2.boundingRect(cnt)
+        sum += (w * h)
+
+    maxar = 10000
+    minar = 1000
+    for cnt in contours:
+        x, y, w, h = cv2.boundingRect(cnt)
+        if maxar > w * h > minar:
+            char = test(x, y, w, h, img, False)
+            if char is not None:
+                original_img = numpy.array(original_img)
+                cv2.rectangle(original_img, (x, y), (x + w, y + h), boxColor, boxWidth)
+                original_img = Image.fromarray(np.uint8(original_img))
+                draw = ImageDraw.Draw(original_img)
+                font = ImageFont.truetype("./arial.ttf", 30)
+                draw.text((x, y - (boxWidth * 4) - 20), str(char), fill=(255, 0, 0), font=font)
+
+    try:
+        return np.array(original_img)
+    except UnboundLocalError:
+        return img
 
 
 cv2.waitKey()
