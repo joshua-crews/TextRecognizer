@@ -19,8 +19,8 @@ def run_image(image):
     config.read('libraries/config.ini')
 
     # Process image
-    binImage = Binarizer.binarize(image)
-    binImage.show()
+    binarization_thesh = int(config.get('Mapping_Options', 'binarization_threshold'))
+    binImage = Binarizer.binarize(image, binarization_thesh)
     boxColor = config.get('Mapping_Options', 'color')
     boxColor = eval(boxColor)
     text = Network.predict(img=binImage, boxColor=boxColor,

@@ -1,5 +1,5 @@
 """
-This is the main module for running TextRecognizer
+This is the main module for running TextRecognizer, with a complete set of examples using both a live stream or opening an image
 """
 import PIL.Image
 
@@ -16,7 +16,7 @@ def run_sample_image():
     """
     Test class for running sample images
     """
-    img = Image.open("sample-images/handwriting.png")
+    img = Image.open("sample-images/hello-world.png")
     TextRecognizer.run_image(img)
 
 
@@ -45,4 +45,4 @@ def run_sample_stream():
 
 
 if __name__ == '__main__':
-    run_sample_stream()
+    run_sample_image()
