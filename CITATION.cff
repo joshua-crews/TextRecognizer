@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "Please feel free to cite the information below."
+authors:
+  - family-names: Crews
+    given-names: Joshua
+    orcid:
+title: "Text Recognizer for Images"
+version: 1.0.0
+doi:
+date-released: 2022-05-03
